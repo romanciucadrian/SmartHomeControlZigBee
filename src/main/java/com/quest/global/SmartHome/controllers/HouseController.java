@@ -46,6 +46,19 @@ public class HouseController {
         }
     }
 
+    @GetMapping("{houseName}")
+    public ResponseEntity<?> getHouseByName(@PathVariable(value = "houseName") String houseName) {
+
+        try {
+            return new ResponseEntity<>(houseService.findHouseByName(houseName),
+                    HttpStatus.OK);
+        } catch (HouseNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+
     @PutMapping("{houseName}")
     public ResponseEntity<?> updateHouseByName(@PathVariable("houseName") String houseName,
                                                @RequestParam("houseNewName") String houseNewName) {
