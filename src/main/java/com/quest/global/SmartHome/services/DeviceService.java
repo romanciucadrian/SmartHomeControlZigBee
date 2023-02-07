@@ -64,25 +64,32 @@ public class DeviceService implements IDeviceService {
     @Transactional
     public Device updateDeviceByName(String deviceName, String deviceNewName) throws DeviceNotFoundException {
 
-        try {
-            Device device = deviceRepository.findDeviceByDeviceName(deviceName);
-            device.setDeviceName(deviceNewName);
+            Device device =
+                    deviceRepository.findDeviceByDeviceName(deviceName);
 
-            return deviceRepository.save(device);
-        } catch (NoSuchElementException e) {
-            throw new DeviceNotFoundException("This device name doesn't exist!");
-        }
+            if (device != null) {
+
+                device.setDeviceName(deviceNewName);
+
+                return deviceRepository.save(device);
+            } else {
+                throw new DeviceNotFoundException("This device name doesn't exist!");
+            }
+
     }
 
     @Transactional
-    public void deleteDeviceByName(String deviceName) throws DeviceNotFoundException {
+    public String deleteDeviceByName(String deviceName) throws DeviceNotFoundException {
+
         Device device
                 = findDeviceByName(deviceName);
 
-        try {
-            deviceRepository.delete(device);
-        } catch (NoSuchElementException e) {
-            throw new DeviceNotFoundException("This device doesn't exist!");
+        if (device != null) {
+
+             deviceRepository.delete(device);
+             return "Device deleted!";
+        } else {
+          throw new DeviceNotFoundException("This device doesn't exist!");
         }
     }
 

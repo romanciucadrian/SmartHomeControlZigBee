@@ -1,4 +1,4 @@
-package com.quest.global.SmartHome.user;
+package com.quest.global.SmartHome.test;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;

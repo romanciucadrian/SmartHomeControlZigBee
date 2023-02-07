@@ -17,7 +17,7 @@ public interface IDeviceService {
 
     Device updateDeviceByName(String deviceName, String deviceNewName) throws DeviceNotFoundException;
 
-    void deleteDeviceByName(String deviceName) throws DeviceNotFoundException;
+    String deleteDeviceByName(String deviceName) throws DeviceNotFoundException;
 
     Device createDeviceByDeviceTypeHexName(String deviceHexName) throws DeviceTypeNotFoundException, DeviceNotFoundException, MqttException, InterruptedException;
 }

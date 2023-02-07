@@ -144,11 +144,3 @@ public class MqttService implements IMqttService {
     }
 
 }
-
-// TODO: Incarca proiectul pe git
-// Creaza branch separat pentru fiecare task
-// Fa pull request pentru a face merge din branch -> master
-
-// Foloseste o librarie pentru code coverage. ex: jacoco
-// Scrie teste pentru Controllere, servicii.
-    // Testeaza si functii care arunca exceptii
