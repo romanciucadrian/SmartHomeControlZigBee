@@ -1,4 +1,4 @@
-package com.quest.global.SmartHome.user;
+package com.quest.global.SmartHome.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quest.global.SmartHome.controllers.RoomController;
@@ -6,7 +6,6 @@ import com.quest.global.SmartHome.exceptions.HouseNotFoundException;
 import com.quest.global.SmartHome.models.House;
 import com.quest.global.SmartHome.models.Room;
 import com.quest.global.SmartHome.repositories.HouseRepository;
-import com.quest.global.SmartHome.services.HouseService;
 import com.quest.global.SmartHome.services.RoomService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,25 +14,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.data.mongodb.util.BsonUtils.toJson;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
