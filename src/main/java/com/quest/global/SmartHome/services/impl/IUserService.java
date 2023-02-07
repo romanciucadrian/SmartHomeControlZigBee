@@ -8,8 +8,12 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public interface IUserService {
+
     List<UserViewDTO> listAll();
-    void createUser(User user);
+
+    User createUser(User user);
+
     UserViewDTO findUserByID(ObjectId id) throws UserNotFoundException;
-    void deleteUserByID(ObjectId id) throws UserNotFoundException;
+
+    String deleteUserByID(ObjectId id) throws UserNotFoundException;
 }

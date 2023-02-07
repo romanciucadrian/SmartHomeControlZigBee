@@ -33,7 +33,9 @@ public class RoomService implements IRoomService {
                     houseRepository.findById(houseID).orElse(null);
 
             if (house != null) {
-                List<ObjectId> newRoomListFromHouse = house.getRooms();
+
+                List<ObjectId> newRoomListFromHouse =
+                        house.getRooms();
 
                 room.setHouseId(house.getId());
                 newRoomListFromHouse.add(room.getId());

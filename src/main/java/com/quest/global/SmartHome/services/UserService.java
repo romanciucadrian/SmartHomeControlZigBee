@@ -44,34 +44,37 @@ public class UserService implements IUserService {
     }
 
     @Transactional
-    public void createUser(User user) {
+    public User createUser(User user) {
         encodePassword(user);
-        userRepository.save(user);
+       return userRepository.save(user);
     }
 
     @Transactional
     public UserViewDTO findUserByID(ObjectId id) throws UserNotFoundException {
 
-        try {
             UserViewDTO userViewDTO =
                     mapStructMapper.userToUserDTO(userRepository.findById(id).get());
-            return userViewDTO;
-        } catch (NoSuchElementException e) {
-            throw new UserNotFoundException("This User's ID doesn't exist!");
-        }
 
+            if (userViewDTO == null) {
+                throw new UserNotFoundException("Could not find that user!");
+            } else {
+                return userViewDTO;
+            }
     }
 
     @Transactional
-    public void deleteUserByID(ObjectId id) throws UserNotFoundException {
+    public String deleteUserByID(ObjectId id) throws UserNotFoundException {
 
         User user
                 = userRepository.findById(id).orElse(null);
 
         if (user == null) {
             throw  new UserNotFoundException("Could not find that user !");
+        } else {
+            userRepository.delete(user);
+            return "User deleted!";
         }
-        userRepository.delete(user);
+
     }
 
     private void encodePassword(User user) {
