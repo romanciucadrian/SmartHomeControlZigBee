@@ -28,12 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.Mockito.when;
 
@@ -235,8 +233,12 @@ public class HouseRestControllerIntegrationTest {
                         .andReturn().getResponse().getContentAsString();
 
         // Then
-        TypeReference<List<House>> typeReference = new TypeReference<List<House>>() {};
-        List<House> actualList = new ObjectMapper().readValue(responseJson, typeReference);
+        TypeReference<List<House>> typeReference =
+                new TypeReference<>() {};
+
+        List<House> actualList =
+                new ObjectMapper().readValue(responseJson, typeReference);
+
         assertThat(actualList).isEqualTo(expectedList);
     }
 

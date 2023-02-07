@@ -95,9 +95,7 @@ public class MqttService implements IMqttService {
                                 String arrivedMessage = new String(message.getPayload());
                                 logger.info("The received message is: {}" + arrivedMessage);
 
-                                if (commandService.getAllTopics().contains(topic)) {
                                     handleReceivedMessage(topic,arrivedMessage);
-                                }
                             }
                         });
 
@@ -124,13 +122,18 @@ public class MqttService implements IMqttService {
 
             }
 
-            if(device.getHexId() == null){
-                JSONObject jsonObject = new JSONObject(arrivedMessage);
+            if (device.getHexId() == null) {
+                JSONObject jsonObject =
+                        new JSONObject(arrivedMessage);
 
-                JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray("ZbStatus3"));
+                JSONArray jsonArray =
+                        new JSONArray(jsonObject.getJSONArray("ZbStatus3"));
 
-                device.setHexId(((JSONObject)jsonArray.get(0)).getString("Device"));
-
+                device.setHexId
+                        (
+                        ((JSONObject)jsonArray.get(0))
+                                .getString("Device")
+                );
             }
 
             deviceRepository.save(device);

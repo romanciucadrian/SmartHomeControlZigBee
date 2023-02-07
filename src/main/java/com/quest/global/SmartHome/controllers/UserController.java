@@ -7,7 +7,6 @@ import com.quest.global.SmartHome.models.ERole;
 import com.quest.global.SmartHome.models.Role;
 import com.quest.global.SmartHome.models.User;
 import com.quest.global.SmartHome.payload.request.SignupRequest;
-import com.quest.global.SmartHome.payload.response.MessageResponse;
 import com.quest.global.SmartHome.services.RoleService;
 import com.quest.global.SmartHome.services.UserService;
 import org.bson.types.ObjectId;
@@ -51,7 +50,9 @@ public class UserController {
                 signupRequest.getPassword()
         );
 
-        List<Role> roles = new ArrayList<>();
+        List<Role> roles =
+                new ArrayList<>();
+
         roles.add(roleService.findRoleByName(ERole.Admin));
 
         if (user.getIsRoot()) {
@@ -59,21 +60,42 @@ public class UserController {
         }
 
         user.setRoles(roles);
-        userService.createUser(user);
 
-        return ResponseEntity.ok(new MessageResponse("User has been registered!"));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.createUser(user));
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable ObjectId id) throws UserNotFoundException {
-        userService.deleteUserByID(id);
+    public ResponseEntity<?> deleteUserById(@PathVariable ObjectId id) throws UserNotFoundException {
+
+        try {
+            return new ResponseEntity<>(userService.deleteUserByID(id),
+                    HttpStatus.OK
+            );
+        } catch (UserNotFoundException e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<UserViewDTO> getById(@PathVariable ObjectId id) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.findUserByID(id),
-                HttpStatus.OK
-        );
+    public ResponseEntity<?> getById(@PathVariable ObjectId id) throws UserNotFoundException {
+
+        try {
+
+            return new ResponseEntity<>(userService.findUserByID(id),
+                    HttpStatus.OK
+            );
+        } catch (UserNotFoundException e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+
     }
 
 }
