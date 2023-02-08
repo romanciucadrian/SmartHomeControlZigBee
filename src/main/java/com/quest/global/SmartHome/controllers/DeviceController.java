@@ -31,9 +31,8 @@ public class DeviceController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateDevice(@RequestParam String deviceName,
-                                          @RequestParam String deviceNewName)
-            throws DeviceNotFoundException {
+    public ResponseEntity<?> updateDeviceName(@RequestParam String deviceName,
+                                          @RequestParam String deviceNewName) {
 
         try {
             return new ResponseEntity<>(deviceService.updateDeviceByName(deviceName, deviceNewName),
@@ -48,7 +47,7 @@ public class DeviceController {
     }
 
     @DeleteMapping("{deviceName}")
-    public ResponseEntity<?> deleteDevice(@PathVariable String deviceName) {
+    public ResponseEntity<?> deleteDeviceByName(@PathVariable String deviceName) {
 
         try {
            return new ResponseEntity<>(deviceService.deleteDeviceByName(deviceName),

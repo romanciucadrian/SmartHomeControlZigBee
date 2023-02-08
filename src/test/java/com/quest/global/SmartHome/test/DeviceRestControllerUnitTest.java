@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quest.global.SmartHome.controllers.DeviceController;
 import com.quest.global.SmartHome.exceptions.DeviceNotFoundException;
-import com.quest.global.SmartHome.mapstruct.MapStructMapperImpl;
 import com.quest.global.SmartHome.models.Device;
-import com.quest.global.SmartHome.models.House;
 import com.quest.global.SmartHome.services.DeviceService;
 
 
@@ -22,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DeviceRestControllerUnitTest {
 
     private MockMvc mockMvc;
-
-    private MapStructMapperImpl mapper =
-            new MapStructMapperImpl();
 
     private final ObjectMapper objectMapper =
             new ObjectMapper();
@@ -107,7 +101,7 @@ public class DeviceRestControllerUnitTest {
     public void testUpdateDeviceName_WhenNameIsFound() throws Exception {
 
         // Given
-        String deviceName =
+        String deviceName1 =
                 "OldName";
 
         String deviceNewName =
@@ -117,12 +111,12 @@ public class DeviceRestControllerUnitTest {
 
         device.setDeviceName(deviceNewName);
 
-        given(deviceService.updateDeviceByName(deviceName, deviceNewName)).willReturn(device);
+        given(deviceService.updateDeviceByName(deviceName1, deviceNewName)).willReturn(device);
 
         // When
            ResultActions resultActions =
                    mockMvc.perform(put("/api/devices/")
-                        .param("deviceName", deviceName)
+                        .param("deviceName", deviceName1)
                         .param("deviceNewName", deviceNewName)
                         .contentType(MediaType.APPLICATION_JSON));
 
