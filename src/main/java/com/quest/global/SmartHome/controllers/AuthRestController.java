@@ -36,9 +36,12 @@ public class AuthRestController {
     @PostMapping
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-        );
+        Authentication authentication =
+                authenticationManager.authenticate
+                        (
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+                        loginRequest.getPassword())
+                        );
 
         SecurityContextHolder.getContext()
                              .setAuthentication(authentication);
@@ -53,7 +56,8 @@ public class AuthRestController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        String jwt = jwtUtils.generateTokenFromUsername(userDetails.getUsername());
+        String jwt =
+                jwtUtils.generateTokenFromUsername(userDetails.getUsername());
 
         return ResponseEntity.ok(new UserInfoResponse(jwt,
                 userDetails.getId(),
