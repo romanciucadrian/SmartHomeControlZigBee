@@ -7,8 +7,6 @@ import com.quest.global.SmartHome.models.DeviceType;
 import com.quest.global.SmartHome.repositories.DeviceRepository;
 import com.quest.global.SmartHome.repositories.DeviceTypeRepository;
 import com.quest.global.SmartHome.services.impl.IDeviceService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +17,6 @@ import java.util.NoSuchElementException;
 @Service
 public class DeviceService implements IDeviceService {
 
-    private static final Logger logger = LoggerFactory.getLogger(DeviceService.class);
     private final DeviceRepository deviceRepository;
     private final MqttService mqttService;
     private final DeviceTypeRepository deviceTypeRepository;
