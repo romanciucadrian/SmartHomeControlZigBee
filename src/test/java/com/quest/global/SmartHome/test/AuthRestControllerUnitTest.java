@@ -112,6 +112,7 @@ public class AuthRestControllerUnitTest {
                         roles
                 );
 
+        // When
         given(jwtUtils.generateTokenFromUsername(username))
                 .willReturn(jwtToken);
 
@@ -122,16 +123,13 @@ public class AuthRestControllerUnitTest {
                 .willReturn(userDetails);
 
 
-        // When
-          MvcResult result = mockMvc.perform(post("/api/login/")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(loginRequest)))
-                        .andExpect(status().isOk())
-                  .andReturn();
-
         // Then
-        String actualResponse =
-                result.getResponse().getContentAsString();
+        String actualResponse = mockMvc.perform(post("/api/login/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginRequest)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
 
         String expectedResponse =
                 objectMapper.writeValueAsString(userInfoResponse);

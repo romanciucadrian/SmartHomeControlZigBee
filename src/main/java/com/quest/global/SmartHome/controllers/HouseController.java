@@ -75,7 +75,6 @@ public class HouseController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
-
     }
 
     @GetMapping
