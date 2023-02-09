@@ -1,23 +1,17 @@
 package com.quest.global.SmartHome.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quest.global.SmartHome.exceptions.DeviceNotFoundException;
 import com.quest.global.SmartHome.exceptions.DeviceTypeNotFoundException;
-import com.quest.global.SmartHome.mapstruct.MapStructMapperImpl;
 import com.quest.global.SmartHome.models.Device;
 import com.quest.global.SmartHome.models.DeviceType;
 import com.quest.global.SmartHome.repositories.DeviceRepository;
 import com.quest.global.SmartHome.repositories.DeviceTypeRepository;
 import com.quest.global.SmartHome.services.impl.IDeviceService;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -117,8 +111,5 @@ public class DeviceService implements IDeviceService {
             }
         }
     }
-
-
-
 
 }

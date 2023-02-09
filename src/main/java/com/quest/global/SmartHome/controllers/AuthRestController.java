@@ -59,10 +59,12 @@ public class AuthRestController {
         String jwt =
                 jwtUtils.generateTokenFromUsername(userDetails.getUsername());
 
-        return ResponseEntity.ok(new UserInfoResponse(jwt,
+        return ResponseEntity.ok(new UserInfoResponse(
+                jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                roles
+                ));
     }
 }
