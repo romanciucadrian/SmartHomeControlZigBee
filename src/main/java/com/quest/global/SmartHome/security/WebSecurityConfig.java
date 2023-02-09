@@ -60,7 +60,7 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/login/**").permitAll()
-                .antMatchers("/api/houses/**").permitAll()
+                .antMatchers("/api/devices/**").permitAll()
                 .antMatchers("/api/users/**").permitAll()
                 .antMatchers("/api/mqtt").permitAll()
                 .antMatchers("/api/mqtt/{deviceHexName}").permitAll()

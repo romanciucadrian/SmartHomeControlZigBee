@@ -1,15 +1,13 @@
-package com.quest.global.SmartHome.user;
+package com.quest.global.SmartHome.test;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quest.global.SmartHome.controllers.UserController;
-import com.quest.global.SmartHome.dtos.HouseDTO;
 import com.quest.global.SmartHome.dtos.UserViewDTO;
 import com.quest.global.SmartHome.exceptions.UserNotFoundException;
 import com.quest.global.SmartHome.mapstruct.MapStructMapperImpl;
 import com.quest.global.SmartHome.models.ERole;
-import com.quest.global.SmartHome.models.House;
 import com.quest.global.SmartHome.models.Role;
 import com.quest.global.SmartHome.models.User;
 import com.quest.global.SmartHome.payload.request.SignupRequest;
@@ -25,7 +23,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;

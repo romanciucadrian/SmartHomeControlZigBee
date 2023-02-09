@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteUserById(@PathVariable ObjectId id) throws UserNotFoundException {
+    public ResponseEntity<?> deleteUserById(@PathVariable ObjectId id) {
 
         try {
             return new ResponseEntity<>(userService.deleteUserByID(id),
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getById(@PathVariable ObjectId id) throws UserNotFoundException {
+    public ResponseEntity<?> getById(@PathVariable ObjectId id) {
 
         try {
 

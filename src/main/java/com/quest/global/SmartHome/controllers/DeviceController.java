@@ -4,6 +4,8 @@ import com.quest.global.SmartHome.dtos.DeviceDTO;
 import com.quest.global.SmartHome.exceptions.DeviceNotFoundException;
 import com.quest.global.SmartHome.models.Device;
 import com.quest.global.SmartHome.services.DeviceService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,15 +14,15 @@ import java.util.List;
 @RequestMapping("/api/devices")
 public class DeviceController {
 
-   private final DeviceService deviceService;
+    private final DeviceService deviceService;
 
     public DeviceController(DeviceService deviceService) {
         this.deviceService = deviceService;
     }
 
     @GetMapping
-    public List<Device> findAll() {
-      return   deviceService.findAll();
+    public List<Device> findAllDevices() {
+        return deviceService.findAll();
     }
 
     @PostMapping
@@ -28,15 +30,35 @@ public class DeviceController {
         return deviceService.saveDevice(device);
     }
 
-    @PutMapping("{deviceName}")
-    public Device update(@PathVariable String deviceName, String deviceNewName) throws DeviceNotFoundException {
-        return deviceService.updateDeviceByName(deviceName, deviceNewName);
+    @PutMapping
+    public ResponseEntity<?> updateDeviceName(@RequestParam String deviceName,
+                                          @RequestParam String deviceNewName) {
+
+        try {
+            return new ResponseEntity<>(deviceService.updateDeviceByName(deviceName, deviceNewName),
+                    HttpStatus.OK
+            );
+        } catch (DeviceNotFoundException e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     @DeleteMapping("{deviceName}")
-    public void delete(@PathVariable String deviceName) throws DeviceNotFoundException {
-        deviceService.deleteDeviceByName(deviceName);
-    }
+    public ResponseEntity<?> deleteDeviceByName(@PathVariable String deviceName) {
 
+        try {
+           return new ResponseEntity<>(deviceService.deleteDeviceByName(deviceName),
+                   HttpStatus.OK
+           );
+        } catch (DeviceNotFoundException e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
 
 }

@@ -20,7 +20,7 @@ public class RoomController {
 
     @PostMapping("{houseID}")
     public ResponseEntity<?> saveRoom(@PathVariable ObjectId houseID,
-                                   @RequestBody Room room) throws HouseNotFoundException {
+                                   @RequestBody Room room) {
 
         try {
             return new ResponseEntity<>(roomService.createRoomForAHouse(houseID, room),

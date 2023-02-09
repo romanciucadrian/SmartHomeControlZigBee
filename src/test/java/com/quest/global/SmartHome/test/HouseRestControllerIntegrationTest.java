@@ -1,4 +1,4 @@
-package com.quest.global.SmartHome.user;
+package com.quest.global.SmartHome.test;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -215,13 +215,18 @@ public class HouseRestControllerIntegrationTest {
     @Test
     public void testGetAllHouses() throws Exception {
 
-        ObjectId id1 = new ObjectId("637cb085be36767eae89c267");
-        ObjectId id2 = new ObjectId("637cb085be36767eae89c268");
-
         // Given
-        List<House> expectedList = new ArrayList<>();
-        expectedList.add(new House(id1, "House1", new ArrayList<>(), new ArrayList<>()));
-        expectedList.add(new House(id2, "House2", new ArrayList<>(), new ArrayList<>()));
+        House house1 =
+                new House();
+
+        House house2 =
+                new House();
+
+        List<House> expectedList =
+                new ArrayList<>();
+
+        expectedList.add(house1);
+        expectedList.add(house2);
 
         given(houseService.listAll()).willReturn(expectedList);
 

@@ -1,23 +1,15 @@
 package com.quest.global.SmartHome.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quest.global.SmartHome.exceptions.DeviceNotFoundException;
 import com.quest.global.SmartHome.exceptions.DeviceTypeNotFoundException;
-import com.quest.global.SmartHome.mapstruct.MapStructMapperImpl;
 import com.quest.global.SmartHome.models.Device;
 import com.quest.global.SmartHome.models.DeviceType;
 import com.quest.global.SmartHome.repositories.DeviceRepository;
 import com.quest.global.SmartHome.repositories.DeviceTypeRepository;
 import com.quest.global.SmartHome.services.impl.IDeviceService;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,7 +17,6 @@ import java.util.NoSuchElementException;
 @Service
 public class DeviceService implements IDeviceService {
 
-    private static final Logger logger = LoggerFactory.getLogger(DeviceService.class);
     private final DeviceRepository deviceRepository;
     private final MqttService mqttService;
     private final DeviceTypeRepository deviceTypeRepository;
@@ -64,25 +55,32 @@ public class DeviceService implements IDeviceService {
     @Transactional
     public Device updateDeviceByName(String deviceName, String deviceNewName) throws DeviceNotFoundException {
 
-        try {
-            Device device = deviceRepository.findDeviceByDeviceName(deviceName);
-            device.setDeviceName(deviceNewName);
+            Device device =
+                    deviceRepository.findDeviceByDeviceName(deviceName);
 
-            return deviceRepository.save(device);
-        } catch (NoSuchElementException e) {
-            throw new DeviceNotFoundException("This device name doesn't exist!");
-        }
+            if (device != null) {
+
+                device.setDeviceName(deviceNewName);
+
+                return deviceRepository.save(device);
+            } else {
+                throw new DeviceNotFoundException("This device name doesn't exist!");
+            }
+
     }
 
     @Transactional
-    public void deleteDeviceByName(String deviceName) throws DeviceNotFoundException {
+    public String deleteDeviceByName(String deviceName) throws DeviceNotFoundException {
+
         Device device
                 = findDeviceByName(deviceName);
 
-        try {
-            deviceRepository.delete(device);
-        } catch (NoSuchElementException e) {
-            throw new DeviceNotFoundException("This device doesn't exist!");
+        if (device != null) {
+
+             deviceRepository.delete(device);
+             return "Device deleted!";
+        } else {
+          throw new DeviceNotFoundException("This device doesn't exist!");
         }
     }
 
@@ -110,8 +108,5 @@ public class DeviceService implements IDeviceService {
             }
         }
     }
-
-
-
 
 }
