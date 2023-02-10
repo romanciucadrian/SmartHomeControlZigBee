@@ -8,7 +8,6 @@ import com.quest.global.SmartHome.mapstruct.mappers.MapStructMapper;
 import com.quest.global.SmartHome.models.Device;
 import com.quest.global.SmartHome.repositories.CommandRepository;
 import com.quest.global.SmartHome.repositories.DeviceRepository;
-import com.quest.global.SmartHome.repositories.DeviceTypeRepository;
 import com.quest.global.SmartHome.services.impl.IMqttService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.json.JSONArray;
@@ -32,7 +31,6 @@ public class MqttService implements IMqttService {
     private final MqttConfig mqttConfig;
     private final MapStructMapper mapStructMapper;
     private final CommandRepository commandRepository;
-    private final CommandService commandService;
     private final ExecutorService executorService
             = Executors.newFixedThreadPool(10);
 
@@ -40,14 +38,13 @@ public class MqttService implements IMqttService {
     private String subscribeTopic;
 
     public MqttService(ObjectMapper objectMapper, DeviceRepository deviceRepository, MqttConfig mqttConfig,
-                       MapStructMapper mapStructMapper, CommandRepository commandRepository, CommandService commandService) {
+                       MapStructMapper mapStructMapper, CommandRepository commandRepository) {
 
         this.objectMapper = objectMapper;
         this.deviceRepository = deviceRepository;
         this.mqttConfig = mqttConfig;
         this.mapStructMapper = mapStructMapper;
         this.commandRepository = commandRepository;
-        this.commandService = commandService;
     }
 
     @Async

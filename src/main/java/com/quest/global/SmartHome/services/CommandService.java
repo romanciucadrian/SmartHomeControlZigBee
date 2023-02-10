@@ -4,9 +4,7 @@ import com.quest.global.SmartHome.models.Command;
 import com.quest.global.SmartHome.repositories.CommandRepository;
 import com.quest.global.SmartHome.services.impl.ICommandService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +22,10 @@ public class CommandService implements ICommandService {
 
         List<Command> allCommandsFromDB = commandRepository.findAll();
 
-        List<String> allTopicsFromCommands =
-                 allCommandsFromDB
-                .stream()
-                .map(Command::getTopic)
-                .collect(Collectors.toList());
-
-        return allTopicsFromCommands;
+        return allCommandsFromDB
+       .stream()
+       .map(Command::getTopic)
+       .collect(Collectors.toList());
 
     }
 }

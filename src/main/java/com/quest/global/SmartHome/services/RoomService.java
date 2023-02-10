@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class RoomService implements IRoomService {
@@ -41,6 +40,7 @@ public class RoomService implements IRoomService {
 
                 house.setRooms(newRoomListFromHouse);
                 houseRepository.save(house);
+
             } else {
             throw new HouseNotFoundException("This House ID doesn't exist!");
         }
