@@ -28,7 +28,6 @@ public class RoomService implements IRoomService {
     @Transactional
     public Room createRoomForAHouse(ObjectId houseID, Room room) throws HouseNotFoundException {
 
-        try {
             House house =
                     houseRepository.findById(houseID).orElse(null);
 
@@ -42,8 +41,7 @@ public class RoomService implements IRoomService {
 
                 house.setRooms(newRoomListFromHouse);
                 houseRepository.save(house);
-            }
-        } catch (NoSuchElementException e) {
+            } else {
             throw new HouseNotFoundException("This House ID doesn't exist!");
         }
         return roomRepository.save(room);
