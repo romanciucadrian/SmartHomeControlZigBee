@@ -41,6 +41,7 @@ public class RoomService implements IRoomService {
 
                 house.setRooms(newRoomListFromHouse);
                 houseRepository.save(house);
+
             } else {
             throw new HouseNotFoundException("This House ID doesn't exist!");
         }

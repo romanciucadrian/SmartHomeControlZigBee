@@ -5,7 +5,9 @@ import com.quest.global.SmartHome.dtos.HouseDTO;
 import com.quest.global.SmartHome.exceptions.HouseNotFoundException;
 import com.quest.global.SmartHome.mapstruct.MapStructMapperImpl;
 import com.quest.global.SmartHome.models.House;
+import com.quest.global.SmartHome.models.Room;
 import com.quest.global.SmartHome.repositories.HouseRepository;
+import com.quest.global.SmartHome.repositories.RoomRepository;
 import com.quest.global.SmartHome.services.HouseService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
@@ -14,20 +16,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class HouseServiceExceptionTest {
 
     @Mock
     private HouseRepository houseRepository;
+
+    @Mock
+    private RoomRepository roomRepository;
 
     @Mock
     private MapStructMapperImpl mapper;
@@ -46,17 +52,15 @@ public class HouseServiceExceptionTest {
         given(houseRepository.findById(houseId))
                 .willReturn(Optional.empty());
 
-        given(mapper.houseToHouseDTO(null))
-                .willReturn(null);
+        //When & Then
+        assertThatThrownBy(() -> houseService.findHouseByID(houseId))
+                .isInstanceOf(HouseNotFoundException.class)
+                .hasMessage("Can't find this House ID " + houseId);
 
-        //Then
-        assertThrows(HouseNotFoundException.class, () -> houseService.findHouseByID(houseId));
-
-        verify(houseRepository).findById(houseId);
     }
 
     @Test
-    public void findHouseByID_HouseFound_ShouldNotThrowException() {
+    public void findHouseByID_HouseFound_ShouldNotThrowException() throws HouseNotFoundException {
 
         //Given
         ObjectId id =
@@ -77,11 +81,8 @@ public class HouseServiceExceptionTest {
         given(mapper.houseToHouseDTO(findHouse))
                 .willReturn(houseDTO);
 
-        Optional<House> result =
-                houseRepository.findById(id);
-
         HouseDTO resultDTO =
-                mapper.houseToHouseDTO(result.get());
+                houseService.findHouseByID(id);
 
         //Then
         verify(houseRepository).findById(id);
@@ -94,34 +95,165 @@ public class HouseServiceExceptionTest {
     @Test
     public void findHouseByName_HouseNotFound_ShouldThrowException() {
 
+        //Given
         String houseName =
                 "houseName";
 
         given(houseRepository.findByName(houseName))
                 .willReturn(null);
 
-        given(mapper.houseToHouseDTO(null))
-                .willReturn(null);
-
-        assertThrows(HouseNotFoundException.class, () -> houseService.findHouseByName(houseName));
+        //When & Then
+        assertThatThrownBy(() -> houseService.findHouseByName(houseName))
+                .isInstanceOf(HouseNotFoundException.class)
+                .hasMessage("Can't find this House Name " + houseName);
     }
 
     @Test
-    public void updateHouseName_HouseNotFound_ShouldThrowException() {
+    public void findHouseByName_HouseIsFound_ShouldNotThrowException() throws HouseNotFoundException {
 
         // Given
         String houseName =
                 "houseName";
 
-        // When
+        House house =
+                new House();
+
+        HouseDTO houseDTO =
+                new HouseDTO();
+
+        house.setName(houseName);
+
+        given(houseRepository.findByName(houseName))
+                .willReturn(house);
+
+        given(mapper.houseToHouseDTO(house))
+                .willReturn(houseDTO);
+
+        //When
+        HouseDTO houseDTOResult = houseService.findHouseByName(houseName);
+
+        // Then
+        assertThat(houseDTOResult)
+                .isEqualTo(houseDTO);
+    }
+
+    @Test
+    public void updateHouseByName_HouseIsFound_ShouldNotThrowException() throws HouseNotFoundException {
+
+        //Given
+        String houseName =
+                "houseName";
+
+        String houseNewName =
+                "houseNewName";
+
+        House foundHouse =
+                new House();
+
+        given(houseRepository.findByName(houseName))
+                .willReturn(foundHouse);
+
+        given(houseRepository.save(foundHouse))
+                .willReturn(foundHouse);
+
+        //When
+        House result =
+                houseService.updateHouseName(houseName, houseNewName);
+
+        //Then
+        verify(houseRepository).save(foundHouse);
+        verify(houseRepository).findByName(houseName);
+
+        assertThat(result.getName())
+                .isEqualTo(foundHouse.getName());
+    }
+
+    @Test
+    public void updateHouseByName_HouseIsNotFound_ShouldThrowException() {
+
+        //Given
+        String houseName =
+                "houseName";
+
+        String houseNewName =
+                "houseNewName";
+
+        House house =
+                new House();
+
         given(houseRepository.findByName(houseName))
                 .willReturn(null);
 
-        given(mapper.houseToHouseDTO(null))
-                .willReturn(null);
+        //When & Then
+        assertThatThrownBy(() -> houseService.updateHouseName(houseName, houseNewName))
+                .isInstanceOf(HouseNotFoundException.class)
+                .hasMessage("This house name doesn't exist!");
 
-        // Then
-        assertThrows(HouseNotFoundException.class, () -> houseService.findHouseByName(houseName));
+        verify(houseRepository, never()).save(house);
+    }
+
+    @Test
+    public void testListAllHouses() {
+
+        //Given
+        House house1 =
+                new House();
+
+        House house2 =
+                new House();
+
+        List<House> houseList =
+                new ArrayList<>();
+
+        houseList.add(house1);
+        houseList.add(house2);
+
+        given(houseRepository.findAll()).willReturn(houseList);
+
+        //When
+        List<House> actualListHouse =
+                houseService.listAll();
+
+        //Then
+        assertThat(houseList).isEqualTo(actualListHouse);
+    }
+
+    @Test
+    public void testCreateRoomsForAHouse() {
+
+        //Given
+        ObjectId houseId =
+                new ObjectId();
+
+        House house =
+                new House();
+
+        house.setId(houseId);
+
+        ObjectId roomId =
+                new ObjectId();
+
+        Room room1 =
+                new Room(roomId, house.getId(), "Kitchen");
+
+        Room room2 =
+                new Room(roomId, house.getId(), "BathRoom");
+
+        Room room3 =
+                new Room(roomId, house.getId(), "Bedroom");
+
+        List<Room> roomList =
+                Arrays.asList(room1, room2, room3);
+
+        given(roomRepository.saveAll(anyList()))
+                .willReturn(roomList);
+
+        //When
+        List<Room> actualRoomList =
+                houseService.createRoomsForHouse(house);
+
+        //Then
+        assertThat(actualRoomList).isEqualTo(roomList);
     }
 
 

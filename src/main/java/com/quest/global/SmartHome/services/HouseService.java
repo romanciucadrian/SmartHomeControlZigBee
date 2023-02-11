@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,25 +77,27 @@ public class HouseService implements IHouseService {
 
     @Transactional
     public House updateHouseName(String houseName, String houseNewName) throws HouseNotFoundException {
-        try {
-            House house =
+
+        House house =
                     houseRepository.findByName(houseName);
+
+        if (house != null) {
 
             house.setName(houseNewName);
 
-            return houseRepository.save(house);
+        } else {
+                throw new HouseNotFoundException("This house name doesn't exist!");
+            }
 
-        } catch (NoSuchElementException e) {
-            throw new HouseNotFoundException("This house name doesn't exist!");
-        }
+        return houseRepository.save(house);
     }
 
     @Transactional
     public List<House> listAll() {
-        return (List<House>) houseRepository.findAll();
+        return houseRepository.findAll();
     }
 
-    protected List<Room> createRoomsForHouse(House house) {
+    public List<Room> createRoomsForHouse(House house) {
 
         List<Room> roomList = new ArrayList<>();
 
