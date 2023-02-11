@@ -7,13 +7,11 @@ import com.quest.global.SmartHome.models.User;
 import com.quest.global.SmartHome.repositories.UserRepository;
 import com.quest.global.SmartHome.services.impl.IUserService;
 import org.bson.types.ObjectId;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UserService implements IUserService {

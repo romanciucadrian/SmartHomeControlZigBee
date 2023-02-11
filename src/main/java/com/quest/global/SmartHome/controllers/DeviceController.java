@@ -1,6 +1,6 @@
 package com.quest.global.SmartHome.controllers;
 
-import com.quest.global.SmartHome.dtos.DeviceDTO;
+
 import com.quest.global.SmartHome.exceptions.DeviceNotFoundException;
 import com.quest.global.SmartHome.models.Device;
 import com.quest.global.SmartHome.services.DeviceService;

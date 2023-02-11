@@ -4,8 +4,6 @@ import com.quest.global.SmartHome.payload.request.LoginRequest;
 import com.quest.global.SmartHome.payload.response.UserInfoResponse;
 import com.quest.global.SmartHome.security.details.SmartHomeUserDetails;
 import com.quest.global.SmartHome.security.jwt.JwtUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
