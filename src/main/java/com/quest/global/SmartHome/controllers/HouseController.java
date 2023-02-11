@@ -72,7 +72,7 @@ public class HouseController {
         } catch (HouseNotFoundException e) {
 
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
+                    .status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
         }
     }

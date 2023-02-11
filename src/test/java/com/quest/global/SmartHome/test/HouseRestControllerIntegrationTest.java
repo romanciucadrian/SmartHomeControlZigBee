@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -67,10 +68,14 @@ public class HouseRestControllerIntegrationTest {
     public void testUpdateHouseName() throws Exception {
 
         // Given
-        String houseName = "AdrianROM4";
-        String houseNewName = "AdrianROM5";
+        String houseName =
+                "AdrianROM4";
+        String houseNewName =
+                "AdrianROM5";
 
-        House updatedHouse = new House();
+        House updatedHouse =
+                new House();
+
         updatedHouse.setName(houseNewName);
         updatedHouse.setRooms(new ArrayList<>());
         updatedHouse.setDevicesList(new ArrayList<>());
@@ -86,6 +91,32 @@ public class HouseRestControllerIntegrationTest {
         // Then
         verify(houseService, times(1)).updateHouseName(houseName, houseNewName);
 
+    }
+
+    @Test
+    public void testUpdateHouseByName_when_nameIsNotFound_ShouldThrowException() throws Exception {
+
+        //Given
+        String houseOldName =
+                "oldName";
+        String houseNewName =
+                "newName";
+        String errorMsg =
+                "This house name doesn't exist!";
+
+        given(houseService.updateHouseName(houseOldName, houseNewName))
+                .willThrow(new HouseNotFoundException(errorMsg));
+
+        //When
+        String responseBody =
+                mockMvc.perform(put("/api/houses/{houseName}", houseOldName)
+                        .param("houseNewName", houseNewName)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isNotFound())
+                        .andReturn().getResponse().getContentAsString();
+
+        //Then
+        assertThat(responseBody).isEqualTo(errorMsg);
     }
 
     @Test
