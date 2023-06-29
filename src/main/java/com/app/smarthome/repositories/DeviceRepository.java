@@ -10,9 +10,7 @@ import java.util.Optional;
 @Repository
 public interface DeviceRepository extends MongoRepository<Device, ObjectId> {
 
-    Device findDeviceByDeviceName(String deviceName);
-
     Optional<Device> findDeviceByHexId(String hexId);
-
-
+    Optional<Device> findDeviceByName(String name);
+    Boolean existsByName(String deviceName);
 }

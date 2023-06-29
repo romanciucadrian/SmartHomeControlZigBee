@@ -1,20 +1,15 @@
 package com.app.smarthome.security.jwt;
 
-import java.util.Date;
-
 import com.app.smarthome.security.details.SmartHomeUserDetails;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-
-import io.jsonwebtoken.*;
-import org.springframework.web.util.WebUtils;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Component
 public class JwtUtils {
@@ -26,37 +21,19 @@ public class JwtUtils {
     @Value("${smarthome.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    @Value("${smarthome.app.jwtCookieName}")
-    private String jwtCookie;
+    public String generateJwtToken(Authentication authentication) {
 
-    public String getJwtFromCookies(HttpServletRequest request) {
-        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
-        if (cookie != null) {
-            return cookie.getValue();
-        } else {
-            return null;
-        }
+        UserDetails userPrincipal = (SmartHomeUserDetails) authentication.getPrincipal();
+
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
-    public ResponseCookie generateJwtCookie(SmartHomeUserDetails userPrincipal) {
-        String jwt =
-                generateTokenFromUsername(userPrincipal.getEmail());
-
-        ResponseCookie cookie =
-                ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
-
-        return cookie;
-    }
-
-    public ResponseCookie getCleanJwtCookie() {
-
-        ResponseCookie cookie =
-                ResponseCookie.from(jwtCookie, null).path("/api").build();
-
-        return cookie;
-    }
-
-    public String getUserNameFromJwtToken(String token) {
+    public String getEmailFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -75,16 +52,6 @@ public class JwtUtils {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
-
         return false;
-    }
-
-    public String generateTokenFromUsername(String email) {
-        return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
     }
 }

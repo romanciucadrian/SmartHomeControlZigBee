@@ -7,9 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RoomRepository extends MongoRepository<Room, ObjectId> {
-
-    Room findRoomByName(String name);
-
-    Room findRoomById(ObjectId id);
-
 }

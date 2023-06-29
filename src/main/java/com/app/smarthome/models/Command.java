@@ -1,37 +1,32 @@
 package com.app.smarthome.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Document("Commands")
 public class Command {
 
     @Id
-    @Field(name = "_id")
     private ObjectId id;
 
-    @Field(name = "DeviceId")
+    @Field("DeviceId")
     private ObjectId deviceId;
 
-    @Field(name = "DeviceName")
-    private String deviceNameCommand;
+    @Field("DeviceName")
+    private String deviceName;
 
-    @Field(name = "Name")
-    private String commandName;
+    @Field("Name")
+    private String name;
 
-    @Field(name = "Topic")
+    @Field("Topic")
     private String topic;
 
-    @Field(name = "payload")
+    @Field("payload")
     private String payload;
-
-
 }

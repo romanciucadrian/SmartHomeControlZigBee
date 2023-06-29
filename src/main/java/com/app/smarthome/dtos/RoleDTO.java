@@ -1,12 +1,17 @@
 package com.app.smarthome.dtos;
 
-import lombok.Data;
-import org.bson.types.ObjectId;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class RoleDTO {
+import java.io.Serializable;
 
-    private ObjectId id;
+@Getter
+@Setter
+public class RoleDTO implements Serializable {
+
+    private String id;
 
     private String name;
+
+    private String normalizedName;
 }

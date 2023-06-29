@@ -1,11 +1,20 @@
 package com.app.smarthome.dtos;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class DeviceTypeDTO {
+import java.io.Serializable;
+import java.util.List;
+
+@Getter
+@Setter
+public class DeviceTypeDTO implements Serializable {
+
+    private String id;
+
+    private String name;
+
+    private List<String> mqttTopics;
 
     private String deviceHexName;
-
-    private String deviceTypeName;
 }

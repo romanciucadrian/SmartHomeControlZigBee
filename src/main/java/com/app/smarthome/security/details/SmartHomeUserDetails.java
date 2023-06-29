@@ -19,11 +19,8 @@ public class SmartHomeUserDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private final ObjectId id;
-
     private final String userName;
-
     private final String email;
-
     private final String password;
 
     private final Collection<? extends GrantedAuthority> authorities;
@@ -40,12 +37,12 @@ public class SmartHomeUserDetails implements UserDetails {
 
     public static SmartHomeUserDetails build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getNormalizedName()))
                 .collect(Collectors.toList());
 
         return new SmartHomeUserDetails(
                 user.getId(),
-                user.getUserName(),
+                user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities

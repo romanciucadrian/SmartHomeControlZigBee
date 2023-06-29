@@ -1,9 +1,17 @@
 package com.app.smarthome.dtos;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class CommandDTO {
+import java.io.Serializable;
 
-    private String deviceNameCommand;
+@Getter
+@Setter
+public class CommandDTO implements Serializable {
+
+    private String deviceId;
+    private String deviceName;
+    private String name;
+    private String topic;
+    private String payload;
 }

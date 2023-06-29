@@ -10,5 +10,7 @@ import java.util.Optional;
 @Repository
 public interface DeviceTypeRepository extends MongoRepository<DeviceType, ObjectId> {
 
+    Optional<DeviceType> findDeviceTypeByName(String name);
+
     Optional<DeviceType> findDeviceTypeByDeviceHexName(String deviceHexName);
 }

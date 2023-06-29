@@ -9,12 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CommandRepository extends MongoRepository<Command, ObjectId > {
-
-    Optional<Command> findCommandByCommandName(String commandName);
-
-    Optional<Command> findCommandByDeviceNameCommand(String deviceNameCommand);
-
-    List<Command> findAll();
-
+public interface CommandRepository extends MongoRepository<Command, ObjectId> {
+    Optional<Command> findCommandByName(String name);
+    Optional<List<Command>> findCommandsByDeviceName(String deviceName);
 }

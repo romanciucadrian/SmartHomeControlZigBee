@@ -1,76 +1,101 @@
 package com.app.smarthome.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Document("Users")
 public class User {
 
     @Id
-    @Field(name = "_id")
     private ObjectId id;
 
-    @Field(name = "UserName")
-    private String userName;
+    @Field("UserName")
+    private String username;
 
-    @Field(name = "NormalizedUserName")
+    @Field("NormalizedUserName")
     private String normalizedUserName;
 
-    @Field(name = "Email")
+    @Field("Email")
     private String email;
 
-    @Field(name = "NormalizedEmail")
+    @Field("NormalizedEmail")
     private String normalizedEmail;
 
-    @Field(name = "EmailConfirmed")
+    @Field("EmailConfirmed")
     private Boolean emailConfirmed;
 
-    @Field(name = "PasswordHash")
+    @Field("PasswordHash")
     private String password;
 
-    @Field(name = "roles")
-    @DBRef
-    private List<Role> roles = new ArrayList<>();
+    @Field("SecurityStamp")
+    private String securityStamp;
 
-    @Field(name = "FirstName")
+    @Field("ConcurrencyStamp")
+    private String concurrencyStamp;
+
+    @Field("PhoneNumber")
+    private String phoneNumber;
+
+    @Field("PhoneNumberConfirmed")
+    private Boolean phoneNumberConfirmed;
+
+    @Field("TwoFactorEnabled")
+    private Boolean twoFactorEnabled;
+
+    @Field("LockoutEnd")
+    private Boolean lockoutEnd;
+
+    @Field("LockoutEnabled")
+    private Boolean lockoutEnabled;
+
+    @Field("AccessFailedCount")
+    private Long accessFailedCount;
+
+    @Field("Version")
+    private Long version;
+
+    @Field("CreatedOn")
+    private Date createdOn;
+
+    @Field("Claims")
+    private List<String> claims;
+
+    @DBRef
+    private Set<Role> roles = new HashSet<>();
+
+    @Field("Logins")
+    private List<String> logins;
+
+    @Field("Tokens")
+    private List<String> tokens;
+
+    @Field("FirstName")
     private String firstName;
 
-    @Field(name = "LastName")
+    @Field("LastName")
     private String lastName;
 
-    @Field(name = "Devices")
-    private List<ObjectId> devicesList = new ArrayList<>();
+    @Field("TimeZone")
+    private String timeZone;
 
-    @Field(name = "isRoot")
-    private Boolean isRoot = true;
+    @Field("Devices")
+    private List<ObjectId> devices;
 
-    @Field(name = "Houses")
-    private List<ObjectId> housesList = new ArrayList<>();
+    @Field("isRoot")
+    private Boolean root;
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(String userName, String email, String firstName, String lastName, Boolean isRoot, String password) {
-        this.userName = userName;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.isRoot = isRoot;
-        this.password = password;
-    }
-
+    @Field("Houses")
+    private List<ObjectId> houses;
 }

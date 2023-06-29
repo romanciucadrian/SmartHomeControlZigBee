@@ -1,17 +1,20 @@
 package com.app.smarthome.dtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-public class RoomDTO {
+import java.io.Serializable;
+import java.util.List;
 
-    private ObjectId id;
+@Getter
+@Setter
+public class RoomDTO implements Serializable {
 
-    private ObjectId houseId;
+    private String id;
+
+    private String houseId;
+
+    private List<String> devices;
 
     private String name;
-
 }
